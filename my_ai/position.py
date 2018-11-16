@@ -22,22 +22,10 @@ class Position():
         y = move.y
         if x >= 0 and x < self.__size and y >= 0 and y < self.__size and not move.is_pass_move:
             self.__grid[x][y] = self.__player
-            if self.__check_direction(x, y, -1, -1):
-                self.__fill_direction(x, y, -1, -1)
-            if self.__check_direction(x, y, -1, 0):
-                self.__fill_direction(x, y, -1, 0)
-            if self.__check_direction(x, y, -1, 1):
-                self.__fill_direction(x, y, -1, 1)
-            if self.__check_direction(x, y, 0, -1):
-                self.__fill_direction(x, y, 0, -1)
-            if self.__check_direction(x, y, 0, 1):
-                self.__fill_direction(x, y, 0, 1)
-            if self.__check_direction(x, y, 1, -1):
-                self.__fill_direction(x, y, 1, -1)
-            if self.__check_direction(x, y, 1, 0):
-                self.__fill_direction(x, y, 1, 0)
-            if self.__check_direction(x, y, 1, 1):
-                self.__fill_direction(x, y, 1, 1)
+            for dir_x in [-1, 0, 1]:
+                for dir_y in [-1, 0, 1]:
+                    if (dir_x != 0 or dir_y != 0) and self.__check_direction(x, y, dir_x, dir_y):
+                        self.__fill_direction(x, y, dir_x, dir_y)
             self.__player = 'B' if self.__player == 'W' else 'W'
 
     def __fill_direction(self, x, y, dir_x, dir_y):
@@ -59,22 +47,10 @@ class Position():
         return valid_moves
 
     def __is_valid(self, x, y):
-        if self.__check_direction(x, y, -1, -1):
-            return True
-        if self.__check_direction(x, y, -1, 0):
-            return True
-        if self.__check_direction(x, y, -1, 1):
-            return True
-        if self.__check_direction(x, y, 0, -1):
-            return True
-        if self.__check_direction(x, y, 0, 1):
-            return True
-        if self.__check_direction(x, y, 1, -1):
-            return True
-        if self.__check_direction(x, y, 1, 0):
-            return True
-        if self.__check_direction(x, y, 1, 1):
-            return True
+        for dir_x in [-1, 0, 1]:
+            for dir_y in [-1, 0, 1]:
+                if (dir_x != 0 or dir_y != 0) and self.__check_direction(x, y, dir_x, dir_y):
+                    return True
         return False
 
     def __check_direction(self, x, y, dir_x, dir_y):
@@ -106,21 +82,22 @@ class Position():
 
     def __has_enemy_neighbour(self, x, y):
         result = False
-        if x > 0 and y > 0 and self.__grid[x - 1][y - 1] == ('B' if self.__player == 'W' else 'W'):
+        enemy = ('B' if self.__player == 'W' else 'W')
+        if x > 0 and y > 0 and self.__grid[x - 1][y - 1] == enemy:
             result = True
-        if x > 0 and self.__grid[x - 1][y] == ('B' if self.__player == 'W' else 'W'):
+        if x > 0 and self.__grid[x - 1][y] == enemy:
             result = True
-        if x > 0 and y < self.__size - 1 and self.__grid[x - 1][y + 1] == ('B' if self.__player == 'W' else 'W'):
+        if x > 0 and y < self.__size - 1 and self.__grid[x - 1][y + 1] == enemy:
             result = True
-        if y > 0 and self.__grid[x][y - 1] == ('B' if self.__player == 'W' else 'W'):
+        if y > 0 and self.__grid[x][y - 1] == enemy:
             result = True
-        if y < self.__size - 1 and self.__grid[x][y + 1] == ('B' if self.__player == 'W' else 'W'):
+        if y < self.__size - 1 and self.__grid[x][y + 1] == enemy:
             result = True
-        if x < self.__size - 1 and y > 0 and self.__grid[x + 1][y - 1] == ('B' if self.__player == 'W' else 'W'):
+        if x < self.__size - 1 and y > 0 and self.__grid[x + 1][y - 1] == enemy:
             result = True
-        if x < self.__size - 1 and self.__grid[x + 1][y] == ('B' if self.__player == 'W' else 'W'):
+        if x < self.__size - 1 and self.__grid[x + 1][y] == enemy:
             result = True
-        if x < self.__size - 1 and y < self.__size - 1 and self.__grid[x + 1][y + 1] == ('B' if self.__player == 'W' else 'W'):
+        if x < self.__size - 1 and y < self.__size - 1 and self.__grid[x + 1][y + 1] == enemy:
             result = True
         return result
 
