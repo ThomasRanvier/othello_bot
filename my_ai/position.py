@@ -2,11 +2,13 @@ from copy import deepcopy
 from move import Move
 
 class Position():
-    def __init__(self, pos_str, grid_size=8):
+    def __init__(self, pos_str='', grid_size=8):
         self.__size = grid_size
-        self.__player = pos_str[0]        
         self.__grid = [[None for _ in range(self.__size)] for _ in range(self.__size)]
-        self.__initalize_grid(pos_str[1:])
+        self.__player = ''
+        if pos_str != '':
+            self.__player = pos_str[0]        
+            self.__initalize_grid(pos_str[1:])
 
     def __initalize_grid(self, pos_str):
         for y in range(self.__size):
@@ -118,3 +120,9 @@ class Position():
 
     def get_player(self):
         return self.__player
+        
+    def set_grid(self, grid):
+        self.__grid = grid
+
+    def set_player(self, player):
+        self.__player = player
