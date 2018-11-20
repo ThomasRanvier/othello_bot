@@ -65,10 +65,7 @@ class Position():
                 out_of_bounds = True
             else:
                 if self.__grid[x][y] == self.__player:
-                    if enemy_between:
-                        return True
-                    else:
-                        return False
+                    return enemy_between
                 elif self.__grid[x][y] != None:
                     enemy_between = True
                 else:
@@ -78,9 +75,7 @@ class Position():
     def __is_candidate(self, x, y):
         if self.__grid[x][y] != None:
             return False
-        elif self.__has_enemy_neighbour(x, y):
-            return True
-        return False
+        return self.__has_enemy_neighbour(x, y)
 
     def __has_enemy_neighbour(self, x, y):
         result = False

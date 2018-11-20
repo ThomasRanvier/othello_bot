@@ -1,13 +1,11 @@
-Test your Othello program
+Othello program
 --------------------------
-This folder contains code for testing your Othello program. 
+This repository contains the folders java and naive.
+In those are repectively my java implementation of the alpha beta algorithm for the Othello game and the initial given implementation.
 
-On a linux machine, do the following:
-- Make sure that the scripts 'othellostart' and 'othello' are executable. If not, write `chmod +x othellostart othello_naive`.
+To start the game using two different bots you have to use the following command:
+> othellostart .script\_1 .script\_2 x
 
-- Run the 'othellostart' script with three parameters, indicating which programs should play against each other and a time limit:
-  - `./othellostart` *`white_player`* *`black_player`* *`time_limit`*
-  
-  - For instance, if your home directory is '/home/abc123/' and you have placed your 'othello.sh' script in ~/edu/5DV122/lab1/, then you can play the test program against your own (as black) with a 5s time limit by writing `./othellostart ./othello_naive /home/abc123/edu/5DV122/lab1/othello.sh 5`
+Here script\_1 and script\_2 can either be /java/othello or /naive/othello depending on your choice.
 
-  - If you would like to play against a friend, just replace ./othello_navive with the correct path to your friend's script
+The value x corresponds to the chosen time limit.
