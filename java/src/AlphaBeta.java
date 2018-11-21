@@ -29,15 +29,15 @@ public class AlphaBeta {
         if (initial_position.getValidMoves().size() == 0)
             return new Move(true);
         this.timer = System.nanoTime();
-        int depth = 8;
+        int depth = 7;
         Move best_move = new Move(0, 0);
-        //while ((System.nanoTime() - this.timer) / 1_000_000_000.0 < this.time_limit) {
+        while (depth < 20 && (System.nanoTime() - this.timer) / 1_000_000_000.0 < this.time_limit) {
             try {
                 best_move = this.alphaBeta(initial_position, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
                 System.err.println("Reached depth: " + depth);
                 depth++;
             } catch (OutOfTimeException exception) {}
-        //}
+        }
         return best_move;
     }
 
