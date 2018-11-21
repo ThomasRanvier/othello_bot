@@ -39,15 +39,17 @@ public class Evaluator {
      * @return The computed value.
      */
     private int computeValue(int x, int y, int size) {
-        int result = 0;
+        int result = 1;
+        /*
         if (x == 0)
-            result += 2;
+            result += 1;
         if (y == 0)
-            result += 2;
+            result += 1;
         if (x == size - 1)
-            result += 2;
+            result += 1;
         if (y == size - 1)
-            result += 2;
+            result += 1;
+        */
         return result;
     }
 }

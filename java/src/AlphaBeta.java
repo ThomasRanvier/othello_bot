@@ -5,7 +5,8 @@ import java.util.*;
  * @author Thomas Ranvier
  */
 public class AlphaBeta {
-    private float time_limit;
+    private double time_limit;
+    private double timer;
     private Evaluator evaluator;
 
     /**
@@ -13,9 +14,10 @@ public class AlphaBeta {
      * @param evaluator Evaluator that will be used to evaluate each game state.
      * @param time_limit The time limit that the algorithm must respects.
      */
-    public AlphaBeta(Evaluator evaluator, float time_limit) {
-        this.time_limit = time_limit;
+    public AlphaBeta(Evaluator evaluator, double time_limit) {
+        this.time_limit = time_limit - 0.2;
         this.evaluator = evaluator;
+        this.timer = 0;
     }
 
     /**
@@ -26,7 +28,17 @@ public class AlphaBeta {
     public Move bestMove(Position initial_position) {
         if (initial_position.getValidMoves().size() == 0)
             return new Move(true);
-        return this.alphaBeta(initial_position, 8, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+        this.timer = System.nanoTime();
+        int depth = 8;
+        Move best_move = new Move(0, 0);
+        //while ((System.nanoTime() - this.timer) / 1_000_000_000.0 < this.time_limit) {
+            try {
+                best_move = this.alphaBeta(initial_position, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+                System.err.println("Reached depth: " + depth);
+                depth++;
+            } catch (OutOfTimeException exception) {}
+        //}
+        return best_move;
     }
 
     /**
@@ -38,7 +50,8 @@ public class AlphaBeta {
      * @param maximizing A boolean true if the function is called in a maximizing state, false otherwise.
      * @return The local best move depending on how deep the call is in the recursion tree.
      */
-    private Move alphaBeta(Position initial_position, int depth, int alpha, int beta, boolean maximizing) {
+    private Move alphaBeta(Position initial_position, int depth, int alpha, int beta, boolean maximizing)
+            throws OutOfTimeException {
         if (depth == 0)
             return new Move(this.evaluator.evaluate(initial_position));
         ArrayList<Move> valid_moves = initial_position.getValidMoves();
@@ -47,6 +60,8 @@ public class AlphaBeta {
         int value = maximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         Move best_move = new Move(0, 0);
         for (Move move: valid_moves) {
+            if ((System.nanoTime() - this.timer) / 1_000_000_000.0 > this.time_limit)
+                throw new OutOfTimeException();
             Position new_position = initial_position.clone();
             new_position.makeMove(move);
             Move result_move = this.alphaBeta(new_position, depth - 1, alpha, beta, !maximizing);

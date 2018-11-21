@@ -9,7 +9,7 @@ public class Othello {
      */
     public static void main(String[] args) {
         String pos_str = args[0];
-        float time_limit = Float.parseFloat(args[1]);
+        double time_limit = Double.parseDouble(args[1]);
         Position position = new Position(pos_str);
         Evaluator evaluator = new Evaluator(position.getPlayer());
         AlphaBeta algorithm = new AlphaBeta(evaluator, time_limit);
