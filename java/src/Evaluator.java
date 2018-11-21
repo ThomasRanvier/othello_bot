@@ -3,7 +3,14 @@
  */
 public class Evaluator {
     private char player;
-    private int[][] weights
+    private int[][] WEIGHTS = {{4, -3, 2, 2, 2, 2, -3, 4},
+                            {-3, -4, -1, -1, -1, -1, -4, -3},
+                            {2, -1, 1, 0, 0, 1, -1, 2},
+                            {2, -1, 0, 1, 1, 0, -1, 2},
+                            {2, -1, 0, 1, 1, 0, -1, 2},
+                            {2, -1, 1, 0, 0, 1, -1, 2},
+                            {-3, -4, -1, -1, -1, -1, -4, -3},
+                            {4, -3, 2, 2, 2, 2, -3, 4}};
 
     /**
      * Class constructor that takes the played player as argument.
@@ -11,14 +18,6 @@ public class Evaluator {
      */
     public Evaluator(char player) {
         this.player = player;
-        this.weights = {{4, -3, 2, 2, 2, 2, -3, 4},
-                        {-3, -4, -1, -1, -1, -1, -4, -3},
-                        {2, -1, 1, 0, 0, 1, -1, 2},
-                        {2, -1, 0, 1, 1, 0, -1, 2},
-                        {2, -1, 0, 1, 1, 0, -1, 2},
-                        {2, -1, 1, 0, 0, 1, -1, 2},
-                        {-3, -4, -1, -1, -1, -1, -4, -3},
-                        {4, -3, 2, 2, 2, 2, -3, 4}};
     }
 
     /**
@@ -33,7 +32,7 @@ public class Evaluator {
             for(int y = 0; y < position.SIZE; y++) {
                 if (grid[x][y] != 'E') {
                     //int value = computeValue(x, y, position.SIZE);
-                    result += grid[x][y] == this.player ? this.weights[x][y] : -this.weights[x][y];
+                    result += grid[x][y] == this.player ? this.WEIGHTS[x][y] : -this.WEIGHTS[x][y];
                 }
             }
         }
