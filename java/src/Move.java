@@ -6,7 +6,7 @@ public class Move {
     public boolean is_pass_move;
 
     /**
-     * Class constructor that takes a boolean argument.
+     * Class constructor that takes a boolean as argument.
      * @param is_pass_move A boolean true if the move is a pass move, false otherwise.
      */
     public Move(boolean is_pass_move) {
@@ -14,7 +14,7 @@ public class Move {
     }
 
     /**
-     * Class constructor that takes an integer argument.
+     * Class constructor that takes an integer as argument.
      * @param value An integer that corresponds to the value of the move.
      */
     public Move(int value) {

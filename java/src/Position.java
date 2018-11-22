@@ -198,6 +198,13 @@ public class Position {
     }
 
     /**
+     * Set the player as the enemy.
+     */
+    public void changePlayer() {
+        this.player = this.player == 'X' ? 'O' : 'X';
+    }
+
+    /**
      * A getter for the internal grid.
      * @return A clone of the grid.
      */
