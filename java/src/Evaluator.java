@@ -5,14 +5,14 @@ import java.util.*;
  */
 public class Evaluator {
     private char player;
-    private int[][] WEIGHTS = {{4, -3, 2, 2, 2, 2, -3, 4},
+    private int[][] WEIGHTS = {{6, -3, 2, 2, 2, 2, -3, 6},
                                 {-3, -4, -1, -1, -1, -1, -4, -3},
                                 {2, -1, 1, 0, 0, 1, -1, 2},
                                 {2, -1, 0, 1, 1, 0, -1, 2},
                                 {2, -1, 0, 1, 1, 0, -1, 2},
                                 {2, -1, 1, 0, 0, 1, -1, 2},
                                 {-3, -4, -1, -1, -1, -1, -4, -3},
-                                {4, -3, 2, 2, 2, 2, -3, 4}};
+                                {6, -3, 2, 2, 2, 2, -3, 6}};
 
     /**
      * Class constructor that takes the played player as argument.
