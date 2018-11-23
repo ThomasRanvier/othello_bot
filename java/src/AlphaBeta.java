@@ -15,7 +15,7 @@ public class AlphaBeta {
      * @param time_limit The time limit that the algorithm must respects.
      */
     public AlphaBeta(Evaluator evaluator, double time_limit) {
-        this.time_limit = time_limit - 0.2;
+        this.time_limit = time_limit - 0.002;
         this.evaluator = evaluator;
         this.timer = 0;
     }
@@ -29,7 +29,7 @@ public class AlphaBeta {
         if (initial_position.getValidMoves().size() == 0)
             return new Move(true);
         this.timer = System.nanoTime();
-        int depth = 7;
+        int depth = 5;
         Move best_move = new Move(true);
         while (depth < 20 && (System.nanoTime() - this.timer) / 1_000_000_000.0 < this.time_limit) {
             try {
