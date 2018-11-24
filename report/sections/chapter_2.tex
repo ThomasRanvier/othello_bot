@@ -1,3 +1,39 @@
+I implemented my program in Java, I used the given helper code as reference during my work but I implemented everything in my own way.
+
+\section{The makeMove function}
+
+I choose to realise the clone of the current position using another function which is directly called from the alphaBeta function, it is then not included in the makeMove function.
+
+The first thing done in the function is to check if the asked move is in the grid boundaries and if it is not a pass move.
+Then it sets the cell selected by the move to the owned player.
+After that for all eight directions it calls the function checkDirection which returns true if the enemy cells on that direction are being captured.
+If it returns true the function fillDirection is called, this will capture the enemy cells in between by replacing them by the owned player.
+Once the process is done the player is changed for its opponent.
+
+Here is the pseudocode of that function.
+
+\FloatBarrier
+\begin{algorithm}
+    \caption{make move}
+    \begin{algorithmic}[1]
+        \Procedure{makeMove}{$x, y$}
+            \If{$x$ and $y$ are in boundaries}
+                \State $this.grid[x][y] \gets this.player$
+                \For{every direction around the cell as $dir\_x$ and $dir\_y$}
+                    \If{$this.checkDirection(x, y, dir\_x, dir\_y)$}
+                        \State $this.fillDirection(x, y, dir\_x, dir\_y)$
+                    \EndIf
+                \EndFor
+                \State $this.changePlayer()$
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\FloatBarrier
+
+The variables `dir\_x' and `dir\_y' corresponds to the values that one has to add respectivelly to `x' and `y' in order to progress along the corresponding direction.
+To access to the eight possible directions we just have to make `dir\_x' and `dir\_y' loop through the tree following values: [-1, 0, 1] and not consider the direction where both `dir\_x' and `dir\_y' are 0.
+
 \section{Alpha Beta implementation}
 
 I implemented the Alpha Beta algorithm following the wikipedia pseudocode.
@@ -10,18 +46,17 @@ Here is the pseudocode of my implementation adapted to the Othello game.
     \caption{Alpha Beta}
     \begin{algorithmic}[1]
         \Procedure{alphaBeta}{$initial\_position, depth, alpha, beta$}
-            \State $valid\_moves \gets initial\_position.getValidMoves()$
-            \If{$depth == 0 \lor valid\_moves.size() == 0$}
+            \If{$depth == 0 \lor$ no more valid moves}
                 \State \textbf{return} a move with value set to the evaluation
             \EndIf
             \State $maximizing \gets initial\_position.getPlayer() == this.player$
             \State $best\_move \gets$ a default move
-            \If{$maximizing == true$}
-                \State $value \gets -\infty$
-                \ForAll{$move$ from $valid\_moves$}
-                    \State $new\_pos \gets$ a clone of $initial\_position$    
-                    \State $new\_pos.makeMove(move)$
-                    \State $res\_move \gets alphaBeta(new\_pos, depth - 1, alpha, beta)$
+            \State $value \gets -\infty$ if $maximizing$, $+\infty$ otherwise
+            \ForAll{$move$ from valid moves}
+                \State $new\_pos \gets$ a clone of $initial\_position$    
+                \State $new\_pos.makeMove(move)$
+                \State $res\_move \gets alphaBeta(new\_pos, depth - 1, alpha, beta)$
+                \If{$maximizing$}
                     \If{$res\_move.value > value$}
                         \State $value \gets res\_move$
                         \State $move.value \gets value$
@@ -32,13 +67,7 @@ Here is the pseudocode of my implementation adapted to the Othello game.
                         \State \textbf{return} $move$
                     \EndIf
                     \State $alpha \gets max(value, alpha)$
-                \EndFor
-            \Else
-                \State $value \gets \infty$
-                \ForAll{$move$ from $valid\_moves$}
-                    \State $new\_pos \gets$ a clone of $initial\_position$    
-                    \State $new\_pos.makeMove(move)$
-                    \State $res\_move \gets alphaBeta(new\_pos, depth - 1, alpha, beta)$
+                \Else
                     \If{$res\_move.value < value$}
                         \State $value \gets res\_move$
                         \State $move.value \gets value$
@@ -49,8 +78,8 @@ Here is the pseudocode of my implementation adapted to the Othello game.
                         \State \textbf{return} $move$
                     \EndIf
                     \State $beta \gets min(value, beta)$
-                \EndFor
-            \EndIf
+                \EndIf
+            \EndFor
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
@@ -78,16 +107,15 @@ Here is the pseudocode of the bestMove function which implements the iterative d
 
 \FloatBarrier
 \begin{algorithm}
-    \caption{bestMove}
+    \caption{best move using Alpha Beta}
     \begin{algorithmic}[1]
         \Procedure{bestMove}{$initial\_position$}
-            \If{$initial\_position.getValidMoves().size() == 0$}
+            \If{number of valid moves $== 0$}
                 \State \textbf{return} a pass move
             \EndIf
-            \State $this.timer \gets System.nanoTime()$
             \State $depth \gets 5$
             \State $best\_move \gets$ a default move
-            \While{$depth < 20 \land (System.nanoTime() - this.timer) / 1000000000 < this.time\_limit$}
+            \While{$depth < 20$ $\land$ current time $<$ time limit}
                 \State \textbf{try} \{
                     \State $best\_move \gets this.alphaBeta(initial\_position, depth, -\infty, \infty)$
                     \State $depth \gets depth + 1$
@@ -100,40 +128,78 @@ Here is the pseudocode of the bestMove function which implements the iterative d
 
 \section{Used heuristics}
 
-The heuristics function is what will evaluate a board in order to determine if doing a given move is a good idea or not.
+The heuristics function is what evaluates a board in order to determine if doing a given move is a good idea or not.
 It is the part that differenciates the artificial intelligences from one another, indeed a well balanced and adapted heuristics function will perform way better than a naive heuristics function.
 
-\section{The makeMove function}
+However an evaluation function that is too costly can make the Alpha Beta algorithm go less deep in the recursion and can also be hard to balance.
 
-I choose to realise the clone of the current position using another function which is directly called from the alphaBeta function, it is then not included in the makeMove function.
+\subsection{Static weights matrix}
 
-The first thing done in the function is to check if the asked move is in the grid boundaries and if it is not a pass move.
-Then it sets the cell selected by the move to the owned player.
-After that for all eight directions it calls the function checkDirection which returns true if the enemy cells on that direction are being captured.
-If it returns true the function fillDirection is called, this will capture the enemy cells by replacing them by the owned player.
-Once the process is done the player is changed for its opponent.
+To build my evaluation function I first created a grid that contains weights, each weight correponds to a cell of the grid.
+Then to evaluate the board I sum the weights values of the cells owned by each player and return the difference between the total of my player and the total of the other one.
+By doing so my program could already beat the naive implementation without any problem.
 
-Here is the pseudocode of that function.
+This is the final weights matrix that is used in my program.
+
+\begin{center}
+    \begin{tabular}{ c c c c c c c c } 
+        20 & -3 & 11 & 8 & 8 & 11 & -3 & 20\\ 
+        -3 & -7 & -4 & -1 & -1 & -4 & -7 & -3\\ 
+        11 & -4 & 4 & 2 & 2 & 4 & -4 & 11\\ 
+        8 & -1 & 2 & 1 & 1 & 2 & -1 & 8\\ 
+        8 & -1 & 2 & 1 & 1 & 2 & -1 & 8\\ 
+        11 & -4 & 4 & 2 & 2 & 4 & -4 & 11\\ 
+        -3 & -7 & -4 & -1 & -1 & -4 & -7 & -3\\ 
+        20 & -3 & 11 & 8 & 8 & 11 & -3 & 20\\ 
+    \end{tabular}
+\end{center}
+
+We can see that the corners have a high value, that is because when a player captures a corner that piece cannot be capturerd back by the other player.
+The pieces on the sides also have a high value because once they are captured by a player they are harder to be captured back by the other player since they can only be captured from 2 directions instead of 8 for the interior pieces.
+The pieces around the corners have negative weights, indeed to capture a corner it is needed that the opponent capture one of those pieces, so having negative weights in those places make the program avoid capturing them unless it is really worth it.
+The negative weights that are not around the corners have the same purpose that is to facilitate the capture of the pieces on the sides.
+
+\subsection{Actual mobility evaluation}
+
+To improve my evaluation function an idea was to consider the possibility of my player future mobility versus the opponent future mobility.
+Indeed the more moves are possible to do the more good potential choices will appear for us in the future.
+Another point is that the less moves the opponent can do the easier it will be to beat it.
+
+To evaluate the mobility of a player it is very simple, we just have to call the `getValidMoves' function of the position and the size of the returned vector is the number of possible moves that the player will access to.
+Then to get the mobility of the opponent we just have to change the position player, call again `getValidMoves' and then switch the palyers again to return in the initial state of position.
+
+The returned value of the function is just the difference between the mobility of the player and the mobility of its opponent.
+
+\subsection{Pieces stability}
+
+The last heuristic that I added to my complete evaluation function is the stability evaluation.
+
+To check if a given cell of the board is totally stable we would need to build a complex and especially very not efficient function.
+We are then in the case where we need to simplify the function to a point where we the function is efficient enough to not slow the Alpha Beta algorithm too much but also give good results.
+
+I decided to consider a piece as stable if it cannot be captured by the opponent by placing a piece adjacent to the cell the very next move and unstable otherwise.
+Indeed it would be too costly to determine if a piece is definitely stable in the game and the results would not be much better anyway.
+
+The final function that determines if a piece is stable follows that pseudocode.
 
 \FloatBarrier
 \begin{algorithm}
-    \caption{makeMove}
+    \caption{is a stable cell}
     \begin{algorithmic}[1]
-        \Procedure{makeMove}{$x, y$}
-            \If{$x$ and $y$ are in boundaries}
-                \State $this.grid[x][y] \gets this.player$
-                \For{$dir\_x \gets -1; dir\_x \le 1; dir\_x++$}
-                    \For{$dir\_y \gets -1; dir\_y \le 1; dir\_y++$}
-                        \If{$dir\_x \neq 0 \lor dir\_y \neq 0$}
-                            \If{$this.checkDirection(x, y, dir\_x, dir\_y)$}
-                                \State $this.fillDirection(x, y, dir\_x, dir\_y)$
-                            \EndIf
-                        \EndIf
-                    \EndFor
-                \EndFor
-                \State $this.changePlayer()$
-            \EndIf
+        \Procedure{isStableCell}{$grid, size, x, y$}
+            \For{every direction around the cell}
+                \If{the first neighbour of the cell in that direction is empty}
+                    \If{there is an enemy or empty cell in the opposite direction}
+                        \State \textbf{return} $false$
+                    \EndIf
+                \EndIf
+            \EndFor
+            \State \textbf{return} $true$
         \EndProcedure
     \end{algorithmic}
 \end{algorithm}
 \FloatBarrier
+
+I added the stability evaluation to the function that uses the static weights to determine the value of each cell in the grid.
+Now when a cell is owned by a player the value of that cell is equal to the static weight plus a bonus if the cell is stable for the next move.
+The bonus added to the cell value has a value of 8, which is the value that I found gave the best results.

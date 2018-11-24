@@ -1,1 +1,9 @@
-\blindtext
+To make that program better the main improvements would be done on the heuristics function.
+
+An idea could be to adapt the heuristics function to make it evolve depending on the number of moves left.
+Indeed it is interesting to minimise the number of owned pieces in early game because by doing so the opponent will have a very low mobility where our player will have a lot of possibilities.
+In the end game however it is the opposite, since most of the board is filled both players don't have a lot of mobility left and at that moment the best thing is to maximize the number of pieces that we own to win the game.
+
+As explained in the stability part of the heuristics function the stability evaluation is not complete at all in my implementation, it should be possible to improve it without decreasing the speed of the whole process too much.
+
+Of course it could also be possible to improve the efficiency by improving some functions in the Position class that go through all the cells of the board where it is not always necessary.

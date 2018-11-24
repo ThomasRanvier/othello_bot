@@ -6,7 +6,7 @@ import java.util.*;
 public class Evaluator {
     private char player;
     private int STABLE_INCREMENT = 8;
-    private float MOBILITY_WEIGHT = 0.85;
+    private double MOBILITY_WEIGHT = 0.85;
     private int[][] WEIGHTS = {{20, -3, 11, 8, 8, 11, -3, 20},
                                 {-3, -7, -4, -1, -1, -4, -7, -3},
                                 {11, -4, 4, 2, 2, 4, -1, 11},
@@ -15,7 +15,6 @@ public class Evaluator {
                                 {11, -4, 4, 2, 2, 4, -4, 11},
                                 {-3, -7, -4, -1, -1, -4, -7, -3},
                                 {20, -3, 11, 8, 8, 11, -3, 20}};
-                                {6, -3, 2, 2, 2, 2, -3, 6}};
 
     /**
      * Class constructor that takes the played player as argument.
