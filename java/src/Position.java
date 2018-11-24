@@ -53,7 +53,7 @@ public class Position {
                         this.fillDirection(x, y, dir_x, dir_y);
                 }
             }
-            this.player = this.player == 'X' ? 'O' : 'X';
+            this.changePlayer();
         }
     }
 

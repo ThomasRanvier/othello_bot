@@ -1,0 +1,139 @@
+\section{Alpha Beta implementation}
+
+I implemented the Alpha Beta algorithm following the wikipedia pseudocode.
+My code can be found in the AlphaBeta.java file that contains the class which is used to determine the best move to do.
+
+Here is the pseudocode of my implementation adapted to the Othello game.
+
+\FloatBarrier
+\begin{algorithm}
+    \caption{Alpha Beta}
+    \begin{algorithmic}[1]
+        \Procedure{alphaBeta}{$initial\_position, depth, alpha, beta$}
+            \State $valid\_moves \gets initial\_position.getValidMoves()$
+            \If{$depth == 0 \lor valid\_moves.size() == 0$}
+                \State \textbf{return} a move with value set to the evaluation
+            \EndIf
+            \State $maximizing \gets initial\_position.getPlayer() == this.player$
+            \State $best\_move \gets$ a default move
+            \If{$maximizing == true$}
+                \State $value \gets -\infty$
+                \ForAll{$move$ from $valid\_moves$}
+                    \State $new\_pos \gets$ a clone of $initial\_position$    
+                    \State $new\_pos.makeMove(move)$
+                    \State $res\_move \gets alphaBeta(new\_pos, depth - 1, alpha, beta)$
+                    \If{$res\_move.value > value$}
+                        \State $value \gets res\_move$
+                        \State $move.value \gets value$
+                        \State $best\_move \gets move$
+                    \EndIf
+                    \If{$value \ge beta$}
+                        \State $move.value \gets value$
+                        \State \textbf{return} $move$
+                    \EndIf
+                    \State $alpha \gets max(value, alpha)$
+                \EndFor
+            \Else
+                \State $value \gets \infty$
+                \ForAll{$move$ from $valid\_moves$}
+                    \State $new\_pos \gets$ a clone of $initial\_position$    
+                    \State $new\_pos.makeMove(move)$
+                    \State $res\_move \gets alphaBeta(new\_pos, depth - 1, alpha, beta)$
+                    \If{$res\_move.value < value$}
+                        \State $value \gets res\_move$
+                        \State $move.value \gets value$
+                        \State $best\_move \gets move$
+                    \EndIf
+                    \If{$value \le alpha$}
+                        \State $move.value \gets value$
+                        \State \textbf{return} $move$
+                    \EndIf
+                    \State $beta \gets min(value, beta)$
+                \EndFor
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\FloatBarrier
+
+The recursive alphaBeta function returns an Othello move.
+
+When the maximal depth is reached or if no other moves can be performed the function returns a move with a value set to the evaluation value.
+The evaluation value is determined by the evaluator which analyse the board of the game and return a value that is high if the evaluation for the actual player is `good' and lower otherise.
+The evaluator uses a heuristic function that will be described later in this report.
+
+The recursive function calls itself back and since when the `makeMove' function is called the player is changed the function can automatically know if it must maximize or minimize its selection.
+Indeed when the function is selected a move for its own player the higher the evaluation score the better, this is why the function maximizes its selection in that case.
+On the other hand when it is selecting a move for the opponent if the evaluation score is low it means that it is a good move for the opponent so the function minimizes its selection in that case.
+
+\section{Iterative deepening}
+
+To handle the time limit the solution is to use iterative deepening for the alplaBeta function.
+There is an internal timer in the AlphaBeta class, this timer is checked at each iteration through the valid moves in the alphaBeta function and as soon as the time is reached the function throws an exception.
+
+The alphaBeta function is initially called with a depth of 5 (since it is always way under 1 second) and then the depth is incremented by 1 and the function is called again with the new depth.
+That process repeats itself until it catches an exception, then the whole process stops and the move saved from the previous depth is returned as best move.
+
+Here is the pseudocode of the bestMove function which implements the iterative deepening described above and also directly returns a pass move if the game is over.
+
+\FloatBarrier
+\begin{algorithm}
+    \caption{bestMove}
+    \begin{algorithmic}[1]
+        \Procedure{bestMove}{$initial\_position$}
+            \If{$initial\_position.getValidMoves().size() == 0$}
+                \State \textbf{return} a pass move
+            \EndIf
+            \State $this.timer \gets System.nanoTime()$
+            \State $depth \gets 5$
+            \State $best\_move \gets$ a default move
+            \While{$depth < 20 \land (System.nanoTime() - this.timer) / 1000000000 < this.time\_limit$}
+                \State \textbf{try} \{
+                    \State $best\_move \gets this.alphaBeta(initial\_position, depth, -\infty, \infty)$
+                    \State $depth \gets depth + 1$
+                \State \} \textbf{catch} \{\}
+            \EndWhile
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\FloatBarrier
+
+\section{Used heuristics}
+
+The heuristics function is what will evaluate a board in order to determine if doing a given move is a good idea or not.
+It is the part that differenciates the artificial intelligences from one another, indeed a well balanced and adapted heuristics function will perform way better than a naive heuristics function.
+
+\section{The makeMove function}
+
+I choose to realise the clone of the current position using another function which is directly called from the alphaBeta function, it is then not included in the makeMove function.
+
+The first thing done in the function is to check if the asked move is in the grid boundaries and if it is not a pass move.
+Then it sets the cell selected by the move to the owned player.
+After that for all eight directions it calls the function checkDirection which returns true if the enemy cells on that direction are being captured.
+If it returns true the function fillDirection is called, this will capture the enemy cells by replacing them by the owned player.
+Once the process is done the player is changed for its opponent.
+
+Here is the pseudocode of that function.
+
+\FloatBarrier
+\begin{algorithm}
+    \caption{makeMove}
+    \begin{algorithmic}[1]
+        \Procedure{makeMove}{$x, y$}
+            \If{$x$ and $y$ are in boundaries}
+                \State $this.grid[x][y] \gets this.player$
+                \For{$dir\_x \gets -1; dir\_x \le 1; dir\_x++$}
+                    \For{$dir\_y \gets -1; dir\_y \le 1; dir\_y++$}
+                        \If{$dir\_x \neq 0 \lor dir\_y \neq 0$}
+                            \If{$this.checkDirection(x, y, dir\_x, dir\_y)$}
+                                \State $this.fillDirection(x, y, dir\_x, dir\_y)$
+                            \EndIf
+                        \EndIf
+                    \EndFor
+                \EndFor
+                \State $this.changePlayer()$
+            \EndIf
+        \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\FloatBarrier

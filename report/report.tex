@@ -1,0 +1,33 @@
+\documentclass{report}
+
+\input{structure}
+
+\begin{document}
+
+\input{sections/titlepage}
+
+\chapter*{Abstract}
+\input{sections/abstract}
+
+\tableofcontents
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\input{sections/introduction}
+
+\chapter{How to run my code}
+\input{sections/chapter_1}
+
+\chapter{My implementation}
+\input{sections/chapter_2}
+
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+\input{sections/conclusion}
+
+\listofalgorithms
+\addcontentsline{toc}{chapter}{List of algorithms}
+
+\listoffigures
+
+\end{document}

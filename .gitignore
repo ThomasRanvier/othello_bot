@@ -2,3 +2,11 @@
 out
 __pycache__
 .idea
+*.aux
+*.bbl
+*.blg
+*.loa
+*.lof
+*.log
+*.out
+*.toc

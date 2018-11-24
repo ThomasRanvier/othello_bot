@@ -1,0 +1,14 @@
+I slightly modified the `othellostart' script, it is now placed above the `naive' repository that contains the naive code, the way to use it is the following:
+
+\begin{lstlisting}[language=bash]
+./othellostart .script_1 .script_2 t
+\end{lstlisting}
+
+Where `.script\_1' and `.script\_2' can correspond either to `./naive/othello' or `./java/othello' depending on the game disposition that you chose.
+The variable `t' corresponds to the time limit that you want to set.
+
+So for example if you want to see a fame between the naive as white and my implementation as black for a limit time of 2 seconds this is the command to enter:
+
+\begin{lstlisting}[language=bash]
+./othellostart ./naive/othello ./java/othello 2
+\end{lstlisting}

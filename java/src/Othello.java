@@ -12,7 +12,7 @@ public class Othello {
         double time_limit = Double.parseDouble(args[1]);
         Position position = new Position(pos_str);
         Evaluator evaluator = new Evaluator(position.getPlayer());
-        AlphaBeta algorithm = new AlphaBeta(evaluator, time_limit);
+        AlphaBeta algorithm = new AlphaBeta(position.getPlayer(), evaluator, time_limit);
         Move move = algorithm.bestMove(position);
         System.out.println(move);
     }
