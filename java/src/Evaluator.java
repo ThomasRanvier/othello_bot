@@ -66,7 +66,7 @@ public class Evaluator {
     private int cellEvaluation(char[][] grid, int size, int x, int y) {
         int cell_value = this.WEIGHTS[x][y];
         if (isStableCell(grid, size, x, y))
-            cell_value = cell_value < 0 ? this.STABLE_INCREMENT : cell_value + this.STABLE_INCREMENT;
+            cell_value += this.STABLE_INCREMENT;
         return cell_value;
     }
 

@@ -175,9 +175,10 @@ The returned value of the function is just the difference between the mobility o
 The last heuristic that I added to my complete evaluation function is the stability evaluation.
 
 To check if a given cell of the board is totally stable we would need to build a complex and especially very not efficient function.
-We are then in the case where we need to simplify the function to a point where we the function is efficient enough to not slow the Alpha Beta algorithm too much but also give good results.
+We are then in the case where we need to simplify the function to a point where the function is efficient enough not to slow the Alpha Beta algorithm too much but also give good evaluation results.
 
 I decided to consider a piece as stable if it cannot be captured by the opponent by placing a piece adjacent to the cell the very next move and unstable otherwise.
+That kind of stability is called edge stability and it is not very costly to compute it.
 Indeed it would be too costly to determine if a piece is definitely stable in the game and the results would not be much better anyway.
 
 The final function that determines if a piece is stable follows that pseudocode.
