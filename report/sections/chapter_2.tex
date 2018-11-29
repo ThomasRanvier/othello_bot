@@ -2,6 +2,8 @@ I implemented my program in Java, I used the given helper code as reference duri
 
 \section{The makeMove function}
 
+This is the description of the makeMove function.
+
 I choose to realise the clone of the current position using another function which is directly called from the alphaBeta function, it is then not included in the makeMove function.
 
 The first thing done in the function is to check if the asked move is in the grid boundaries and if it is not a pass move.
@@ -88,10 +90,10 @@ Here is the pseudocode of my implementation adapted to the Othello game.
 The recursive alphaBeta function returns an Othello move.
 
 When the maximal depth is reached or if no other moves can be performed the function returns a move with a value set to the evaluation value.
-The evaluation value is determined by the evaluator which analyse the board of the game and return a value that is high if the evaluation for the actual player is `good' and lower otherise.
+The evaluation value is determined by the evaluator which analyses the board of the game and returns a value that is high if the evaluation for the actual player is `good' and lower otherise.
 The evaluator uses a heuristic function that will be described later in this report.
 
-The recursive function calls itself back and since when the `makeMove' function is called the player is changed the function can automatically know if it must maximize or minimize its selection.
+The recursive function calls itself back and since when the `makeMove' function is called the player is changed, the function can automatically know if it must maximize or minimize its selection.
 Indeed when the function is selected a move for its own player the higher the evaluation score the better, this is why the function maximizes its selection in that case.
 On the other hand when it is selecting a move for the opponent if the evaluation score is low it means that it is a good move for the opponent so the function minimizes its selection in that case.
 
@@ -102,6 +104,7 @@ There is an internal timer in the AlphaBeta class, this timer is checked at each
 
 The alphaBeta function is initially called with a depth of 5 (since it is always way under 1 second) and then the depth is incremented by 1 and the function is called again with the new depth.
 That process repeats itself until it catches an exception, then the whole process stops and the move saved from the previous depth is returned as best move.
+The maximal depth is set at 20, indeed there is no point to try to analyse the game deeper because it would just be a waste of time when the game is near to end.
 
 Here is the pseudocode of the bestMove function which implements the iterative deepening described above and also directly returns a pass move if the game is over.
 
@@ -166,7 +169,7 @@ Indeed the more moves are possible to do the more good potential choices will ap
 Another point is that the less moves the opponent can do the easier it will be to beat it.
 
 To evaluate the mobility of a player it is very simple, we just have to call the `getValidMoves' function of the position and the size of the returned vector is the number of possible moves that the player will access to.
-Then to get the mobility of the opponent we just have to change the position player, call again `getValidMoves' and then switch the palyers again to return in the initial state of position.
+Then to get the mobility of the opponent we just have to change the position player, call again `getValidMoves' and then switch the players again to return in the initial state of position.
 
 The returned value of the function is just the difference between the mobility of the player and the mobility of its opponent.
 
