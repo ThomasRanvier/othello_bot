@@ -21,9 +21,8 @@ fi
 cd "$(dirname "$0")"
 
 if [ $do_compile -eq 1 ]; then
-    cd src
 	# Compile the code:
-	javac *.java -d ../out/ -g
+	javac *.java -d out/ -g
 else
     cd out
     # Call your Java program with a position and time limit:

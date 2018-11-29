@@ -1,21 +1,5 @@
-I slightly modified the `othellostart' script, it is now placed above the `naive' repository that contains the naive code, the way to use it is the following:
+To run my code you have to use the `othellostart' script and put in parameters the two scripts that you want to use, the first one is the white player, the second one is the black player, the variable `t' is the time limit.
 
 \begin{lstlisting}[language=bash]
 ./othellostart .script_1 .script_2 t
-\end{lstlisting}
-
-Where `.script\_1' and `.script\_2' can correspond either to `./naive/othello' or `./java/othello' depending on the game disposition that you chose.
-The variable `t' corresponds to the time limit that you want to set.
-
-So for example if you want to see a fame between the naive as white and my implementation as black for a limit time of 2 seconds this is the command to enter:
-
-\begin{lstlisting}[language=bash]
-./othellostart ./naive/othello ./java/othello 2
-\end{lstlisting}
-
-I also created two scripts, `playblack' and `playwhite' that you can directly use with the time limit as parameter if you want my program to compete against the naive one playing black or white.
-
-\begin{lstlisting}[language=bash]
-./playwhite t
-./playblack t
 \end{lstlisting}

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Usage: bash othelloTestAuto 
+
+valid_pos="WEEEEEEEEEEEEEEEEEEEEEEEEEEEOXEEEEEEXOEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+pass_pos="WXXXXXXXXXXXXXXXXXXXXXXXXXXXOXXXXXXXXOXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+too_short_pos="WEEEEEEEEEEEEEEEEEEEEEEEEEEEOXEEEEEEXOEEEEEEEEEEEEEEEEEEEEEEEEE"
+too_long_pos="WEEEEEEEEEEEEEEEEEEEEEEEEEEEOXEEEEEEXOEEEEEEEEEEEEEEEEEEEEEEEEEE"
+
+# remove .class and .jar
+#rm -rf *.class
+#rm -rf *.jar
+#rm -rf *.pyc
+
+# compile the code:
+echo "---- Compiling the code ----"
+eval "./othello.sh 0 0 1" 
+echo "--------------------------" 
+echo ""
+  
+# Error testing:
+echo "---- Checking error handling ----"
+echo "No arguments (should give an error message about too few arguments):" 
+eval "./othello.sh" 
+echo "" 
+echo "One argument: (should give an error message about too few arguments):"
+eval "./othello.sh $valid_pos "
+echo "" 
+echo "Position string too long (should give a useful error message):" 
+eval "./othello.sh $too_long_pos 1 0"
+echo ""
+echo "Position string too short (should give a useful error message):" 
+eval "./othello.sh $too_short_pos 1 0"
+echo "--------------------------" 
+ 
+echo ""
+echo "---- Checking output ----"
+echo "Testing an opening move (should give a valid move on the form (x,y)):" 
+eval "./othello.sh $valid_pos 1 0"
+echo ""
+echo "Testing a pass move (should write pass):" 
+eval "./othello.sh $pass_pos 1 0"
+echo "--------------------------" 
+	
