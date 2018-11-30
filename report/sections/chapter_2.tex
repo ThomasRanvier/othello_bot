@@ -90,7 +90,7 @@ Here is the pseudocode of my implementation adapted to the Othello game.
 The recursive alphaBeta function returns an Othello move.
 
 When the maximal depth is reached or if no other moves can be performed the function returns a move with a value set to the evaluation value.
-The evaluation value is determined by the evaluator which analyses the board of the game and returns a value that is high if the evaluation for the actual player is `good' and lower otherise.
+The evaluation value is determined by the evaluator which analyses the board of the game and returns a value that is high if the evaluation for the actual player is `good' and lower otherwise.
 The evaluator uses a heuristic function that will be described later in this report.
 
 The recursive function calls itself back and since when the `makeMove' function is called the player is changed, the function can automatically know if it must maximize or minimize its selection.
@@ -99,7 +99,7 @@ On the other hand when it is selecting a move for the opponent if the evaluation
 
 \section{Iterative deepening}
 
-To handle the time limit the solution is to use iterative deepening for the alplaBeta function.
+To handle the time limit the solution is to use iterative deepening for the alphaBeta function.
 There is an internal timer in the AlphaBeta class, this timer is checked at each iteration through the valid moves in the alphaBeta function and as soon as the time is reached the function throws an exception.
 
 The alphaBeta function is initially called with a depth of 5 (since it is always way under 1 second) and then the depth is incremented by 1 and the function is called again with the new depth.
@@ -138,7 +138,7 @@ However an evaluation function that is too costly can make the Alpha Beta algori
 
 \subsection{Static weights matrix}
 
-To build my evaluation function I first created a grid that contains weights, each weight correponds to a cell of the grid.
+To build my evaluation function I first created a grid that contains weights, each weight corresponds to a cell of the grid.
 Then to evaluate the board I sum the weights values of the cells owned by each player and return the difference between the total of my player and the total of the other one.
 By doing so my program could already beat the naive implementation without any problem.
 
@@ -157,7 +157,7 @@ This is the final weights matrix that is used in my program.
     \end{tabular}
 \end{center}
 
-We can see that the corners have a high value, that is because when a player captures a corner that piece cannot be capturerd back by the other player.
+We can see that the corners have a high value, that is because when a player captures a corner that piece cannot be captured back by the other player.
 The pieces on the sides also have a high value because once they are captured by a player they are harder to be captured back by the other player since they can only be captured from 2 directions instead of 8 for the interior pieces.
 The pieces around the corners have negative weights, indeed to capture a corner it is needed that the opponent capture one of those pieces, so having negative weights in those places make the program avoid capturing them unless it is really worth it.
 The negative weights that are not around the corners have the same purpose that is to facilitate the capture of the pieces on the sides.
